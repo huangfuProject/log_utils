@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="info">
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-        </Console>
+        <!-- 使用 RollingFileAppender -->
+        <RollingFile name="File" fileName="logs/app.log" filePattern="logs/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+
+        <!-- 或者使用 FileAppender -->
+        <!--
+        <File name="File" fileName="logs/app.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>
+            </PatternLayout>
+        </File>
+        -->
     </Appenders>
     <Loggers>
+        <!-- 将日志输出到文件 -->
         <Root level="debug">
-            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
         </Root>
+
+        <!-- 仍然保留输出到控制台的配置 -->
+<!--        <Root level="debug">-->
+<!--            <AppenderRef ref="Console"/>-->
+<!--        </Root>-->
     </Loggers>
 </Configuration>
